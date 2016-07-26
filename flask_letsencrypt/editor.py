@@ -16,14 +16,19 @@ from .models import AcmeChallenge
 
 
 class AddForm(wtf.Form):
-    key = TextField('Key', validators=[validators.Required()])
-    value = TextField('Value', validators=[validators.Required()])
+    combined = TextField('Token (key.value)',
+                         validators=[validators.Required()])
 
 
 def editor(template_name):
     form = AddForm()
     if form.validate_on_submit():
-        challenge = AcmeChallenge(key=form.key.data, value=form.value.data)
+        parts = form.combined.data.split(".")
+        if len(parts) != 2:
+            flash('Invalid token')
+            return redirect(url_for('letsencrypt_editor'))
+        [key, value] = parts
+        challenge = AcmeChallenge(key=key, value=value)
         challenge.put()
         flash('Key added')
         return redirect(url_for('letsencrypt_editor'))
