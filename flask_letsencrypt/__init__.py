@@ -18,9 +18,9 @@ __all__ = ['letsencrypt']
 
 
 def letsencrypt(app,
-        template_name,
-        config_url="/letsencrypt/",
-        admin_decorator_func=admin_login_required):
+                template_name,
+                config_url="/letsencrypt/",
+                admin_decorator_func=admin_login_required):
 
     @app.route(config_url, methods=['GET', 'POST'])
     @admin_decorator_func()

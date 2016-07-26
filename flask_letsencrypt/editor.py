@@ -28,4 +28,4 @@ def editor(template_name):
         flash('Key added')
         return redirect(url_for('letsencrypt_editor'))
     return render_template(template_name, form=form,
-            challenges=AcmeChallenge.query())
+                           challenges=AcmeChallenge.query())
